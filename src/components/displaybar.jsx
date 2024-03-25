@@ -1,7 +1,7 @@
 import emailLogo from "../assets/email.svg"
 import locationLogo from "../assets/location.svg"
 import phoneLogo from "../assets/phone.svg" 
-import { person,educationArr,experienceArr,eduHandler } from "./data";
+import { person,eduHandler ,expHandler} from "./data";
 
 export default Displaybar;
 
@@ -41,19 +41,6 @@ function Header(){
 
 function EducationBlock(){
 
-    const information = educationArr.map(data => 
-        <div className="information" key={data.school}>
-        <div className="left">
-            <div className="date">{`${data.startDate} - ${data.endDate}`}</div>
-            <div className="location">{data.location}</div>
-        </div>
-        <div className="right"> 
-            <div className="school fw-bold">{data.school}</div>
-            <div className="degree">{data.degree}</div>
-        </div>
-    </div>
-        );
-
         const eduList = eduHandler.educationArr.map(data => 
             <div className="information" key={data.school}>
             <div className="left">
@@ -70,7 +57,6 @@ function EducationBlock(){
     return(
         <div className="displaybar-block">
             <h3 className="block-title">Education</h3>
-            {information}
             {eduList}
         </div>
     );
@@ -78,7 +64,8 @@ function EducationBlock(){
 
 
 function ExperienceBlock(){
-    const information = experienceArr.map(data => 
+       
+    const expList = expHandler.experienceArr.map(data => 
         <div className="information" key={data.company}>
         <div className="left">
             <div className="date">{`${data.startDate} - ${data.endDate}`}</div>
@@ -86,6 +73,7 @@ function ExperienceBlock(){
         </div>
         <div className="right"> 
             <div className="school fw-bold">{data.company}</div>
+            <div className="position">{data.position}</div>
             <div className="degree">{data.description}</div>
         </div>
     </div>
@@ -94,7 +82,7 @@ function ExperienceBlock(){
     return(
         <div className="displaybar-block">
             <h3 className="block-title">Experience</h3>
-            {information}
+            {expList}
         </div>
     );
 }
