@@ -55,13 +55,14 @@ function EducationDetail({renderVar,setRender}){
     const [add,setAdd] = useState(false);
     const [canExpand,setcanExpand] = useState(true);
 
-    const detailList = eduHandler.educationArr.map( data => 
-        <EducationCard data={data} renderVar={renderVar} setRender={setRender} canExpand={setcanExpand} key={data.id}/>)
+    const detailList = eduHandler.educationArr.length !== 0 ?
+    eduHandler.educationArr.map( data => 
+        <EducationCard data={data} renderVar={renderVar} setRender={setRender} canExpand={canExpand} setcanExpand={setcanExpand} key={data.id}/>) : "";
     
     const addNew = () => {
         const newObj = eduHandler.returnObj();
         return(
-            <EducationForm data={newObj} renderVar={renderVar} setRender={setRender} />
+            <EducationForm data={newObj} renderVar={renderVar} setRender={setRender} add={add} setAdd={setAdd}/>
         )
     }
 
@@ -88,27 +89,33 @@ function EducationDetail({renderVar,setRender}){
     );
 }
 
-function EducationCard({data,renderVar,setRender}){
-  
+function EducationCard({data,canExpand,setcanExpand,renderVar,setRender}){
+    const [formDisplay,setForDisplay] = useState(false);
+
+    const formDisplayer = () => {
+      const form =  canExpand && formDisplay ?  <EducationForm data={data} renderVar={renderVar} setRender={setRender} /> : "";
+        return form;
+    }
+
     return (
-        <div className="card" >
+        <div className="card">
         <button className="card-header" 
-       >
+        onClick={() => setForDisplay(!formDisplay)}>
             <h3 className="heading-3">{data.school}</h3>
             <img src="" alt="" />
         </button>
-        <EducationForm data={data} renderVar={renderVar} setRender={setRender} />
+       {formDisplayer()}
     </div>
     );
 }
 
 
-function EducationForm({data,renderVar,setRender}){
+function EducationForm({data,renderVar,setRender,add,setAdd}){
     
     const obj = eduHandler.findObj(data.id);
 
     const clickHandler = (e,type) => {
-        console.log(obj);
+ 
         switch(type){
             case "school" : obj.school = e.target.value;
             break;
@@ -129,6 +136,7 @@ function EducationForm({data,renderVar,setRender}){
     const saveHandler = (e) => {
         e.preventDefault();
         e.target.style.display = "none";
+        add? setAdd(!add) : "";
     }
 
     const deleteHandler = (e) => {
@@ -136,10 +144,11 @@ function EducationForm({data,renderVar,setRender}){
         console.log(eduHandler.educationArr)
         e.target.style.display = "none";
         setRender(!renderVar);
+        add? setAdd(!add) : "";
     }
 
     return(
-        <form onSubmit={saveHandler}>
+        <form onSubmit={saveHandler} >
         <ul className="detail-list">
             <li className="detail-list-item">
                 <label htmlFor="">School</label>
